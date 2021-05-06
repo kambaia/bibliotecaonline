@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    box-sizing: border-box;
+}
+html, body  #root{
+   max-height: 100%;
+}
+body{
+  background-size: cover;
+  -wibkit-font-smoothing:antialiased !important;
+}
+body, input, li, button, a, p{
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
