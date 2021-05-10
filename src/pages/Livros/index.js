@@ -56,11 +56,11 @@ export default function Livros() {
                   }}>
                    
                     
-             <div style={{width:'100%'}}>{cat? <h2>{`Todos Livros de ${cat} disposição`}</h2>: <h2>Todos Livros a sua disposição</h2> } </div>
-             {livros && livros.map((item, index)=>(
-                    <CardBooxList item={item} key={index}/>
-             ))}
-            
+             <div style={{padding:10, width:'100%'}}>{cat? <h2>{`Todos Livros de ${cat} disposição`}</h2>: <h2>Todos Livros a sua disposição</h2> } </div>
+             {livros.length >0 ?livros.map((item, index)=>(
+                    <CardBooxList item={item} key={index}/> 
+             )):  <h3 style={{borderTop: '1px solid #ddd', padding:20, width:'100%'}}>Nenhum Livro disponivel de momento</h3>}
+             
              </ContentSession>
         </div>
 
@@ -70,26 +70,31 @@ export default function Livros() {
 const CardBooxList = ({ item })=>{
     return(
         <>
-           <CardBooks>
-               <a href={`/livros/${item._id}`}>
-                <div className="card-capa">
-                    <img src={item.capa_ul}/>
-                </div>
-                <div className="card-desc">
-                  <span>{item.titulo}</span>
-                </div>
+       
+        {
+            item? <CardBooks>
+            <a href={`/livros/${item._id}`}>
+             <div className="card-capa">
+                 <img src={item.capa_ul}/>
+             </div>
+             <div className="card-desc">
+               <span>{item.titulo}</span>
+             </div>
 
-                <div className="rodape">
-                    <ul>
-                        <li><a href=""><span><FaIcons.FaFacebookF/></span></a></li>
-                        <li><a href=""><span><FaIcons.FaYoutube/></span></a></li>
-                    </ul>
-                    <div className="baixar">
-                       <span><a target="_blank" href={item.documento.documento_url}><span><FaIcons.FaDownload/></span></a></span>
-                    </div>
-                </div>
-                </a>
-           </CardBooks>
+             <div className="rodape">
+                 <ul>
+                     <li><a href=""><span><FaIcons.FaFacebookF/></span></a></li>
+                     <li><a href=""><span><FaIcons.FaYoutube/></span></a></li>
+                 </ul>
+                 <div className="baixar">
+                    <span><a target="_blank" href={item.documento.documento_url}><span><FaIcons.FaDownload/></span></a></span>
+                 </div>
+             </div>
+             </a>
+        </CardBooks>:
+       ''
+        }
+            <p>Nenhum Livro disponivel de momento</p>
         </>
     )
 }

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { URL_Books_Category} from '../utils/endpoints';
-
+import sweetalert from 'sweetalert';
 export const RegistrarCategoria = (form)=> {
     console.log(form)
     return new Promise(async function (resolve, reject) {
@@ -14,8 +14,17 @@ export const RegistrarCategoria = (form)=> {
             
             };
             const response = await axios(config);
+            const mensagem = response.data.message;
+             sweetalert({
+                 title:"Confirmação de inserção",
+                 text: mensagem,
+                 icon:'success',
+                 buttons:'OK',
+                
+             })
             resolve(response.data);
         } catch (error) {
+            console.log(error.response.data)
             reject("Erro", error)
         }
     })

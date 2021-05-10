@@ -9,7 +9,7 @@ import { RegistrarAutor, getAllAutor} from '../../services/ApiAutor';
 import { RegistrarDocumento, getAllDocumento} from '../../services/ApiDocumento';
 import {RegistrarBook, getAllBooks} from '../../services/ApiBooks';
 import { RegistrarCategoria, getAllCateory} from '../../services/ApiCategory';
-import {} from '../../services/ApiBooks';
+import sweetalert from 'sweetalert';
 import * as FaIcons from 'react-icons/fa';
 
 export default function RegistroLivros() {
@@ -152,6 +152,12 @@ export const RegistrarLivro = ()=>{
             const data = new FormData();
             data.append('doc', documento.doc);
             const  result = await RegistrarDocumento(data);
+             sweetalert({
+                 title:"Confirmação de inserção",
+                 text: "Documento Inserido com sucesso!",
+                 icon:'success',
+                 buttons:'OK'
+             })
             setInfo(result);
            setDocumento({});
 	}
@@ -174,7 +180,12 @@ export const RegistrarLivro = ()=>{
             data.append('documento', form.documento);
             const  result = await RegistrarBook(data, _id);
              const { mesagm } = result;
-             setMsg(mesagm);
+             sweetalert({
+                title:"Confirmação de inserção",
+                text: mesagm,
+                icon:'success',
+                buttons:'OK'
+            })
            setForm({autor:'',
             titulo:'', ano:'', 
             numero_pagina:'',
@@ -278,7 +289,13 @@ export const RegistroAutor = ()=>{
            data.append('link', form.link);
 
            const  result = await RegistrarAutor(data);
-            setForm({ nome: '', bibliografia:'', link:''});
+           sweetalert({
+            title:"Confirmação de inserção",
+            text: "Inserido com sucesso!",
+            icon:'success',
+            buttons:'OK'
+        })
+           setForm({ nome: '', bibliografia:'', link:''});
            
             
         }
@@ -319,8 +336,14 @@ export const RegestroCategoria = ()=>{
         return  console.log("DIgite a categoria do livro que desejas cadastrar")
        }else{
             const  result = await RegistrarCategoria(form);
+            sweetalert({
+                title:"Confirmação de inserção",
+                text: "Inserido com sucesso!",
+                icon:'success',
+                buttons:'OK'
+            })
             setForm({ categoria: ''});
-            console.log(result)
+          
         }
         	
 	}

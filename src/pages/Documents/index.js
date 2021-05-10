@@ -71,14 +71,16 @@ const CardBooxList = ()=>{
                             <img src={livro.capa_ul}/>
                             </div>
                             <div className="card-desc">
-                                <span><strong>Titulo</strong>{livro.titulo}</span>
-                                <span><strong>Autor</strong>{autor}</span>
-                                <span><strong>Instituicao</strong>{livro.numero_pagina}</span>
-                                <span><strong>Tipo</strong>{livro.ano}</span>
-                                <span><strong>Ano</strong>{livro.instituicao}</span>
-                                <span><strong>Tipo</strong>{livro.formato}</span>
-                                <span><strong>Formato</strong>{livro.licenca}</span>
-                                <span><strong>Licença</strong>{categoria}</span>
+                                <span><strong>Titulo: </strong>{livro.titulo}</span>
+                                <span><strong>Autor: </strong>{autor}</span>
+                                <span><strong>Instituicao: </strong>{livro.instituicao}</span>
+                                <span><strong>nº pagina: </strong>{livro.numero_pagina}</span>
+                                
+                                <span><strong>Tipo : </strong>{livro.ano}</span>
+                                <span><strong>Ano: </strong>{livro.ano}</span>
+                                <span><strong>Formato : </strong>{livro.formato}</span>
+                                <span><strong>licenca: </strong>{livro.licenca}</span>
+                                <span><strong>categoria: </strong>{categoria}</span>
                             </div>
                     </div>
                     <div className="dist-text">

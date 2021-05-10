@@ -8,6 +8,7 @@ import { SigInUser } from '../../services/ApiUsers';
 import Registro from '../Registro';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import sweetalert from 'sweetalert';
 
 export default function Login() {
     const [acesso, setAcesso] = useState(true);
@@ -48,9 +49,23 @@ export const LoginForm = ()=>{
 	const  onSubmit = async (e) => {
         e.preventDefault();
        if(form.email===""){
+        sweetalert({
+            title:"Confirmação de inserção",
+            text: "Entroduza o seu email",
+            icon:'error',
+            timer:4000
+           
+        })
         return  console.log("Entroduza o seu email")
        }
        if(form.senha===""){
+        sweetalert({
+            title:"Confirmação de inserção",
+            text: "Introduza uma palavra-passe",
+            icon:'error',
+            timer:4000
+           
+        })
          return console.log("Introduza uma palavra-passe")
         }else{
             const  result = await SigInUser(form);

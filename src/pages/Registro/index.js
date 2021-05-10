@@ -12,7 +12,8 @@ export default function Registro() {
     const  onSubmit = async (e) => {
         e.preventDefault();
         const result = await SigUpUser(form);
-        console.log(result);
+        setForm({nome:'', email:'',  senha:'', telefone:''})
+
     }
     const onChange = (e)=>{
         e.preventDefault();
