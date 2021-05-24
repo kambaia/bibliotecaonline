@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from 'react'
+import React,{useState} from 'react'
 import {ContentSession, Content, CardForm, CardMenu} from './styles';
 import bainner from '../../assets/bainner.webp';
 
@@ -8,7 +8,10 @@ import SideBar from '../../components/SideBar';
 //import { getAllCateory } from '../../services/ApiCategory';
 
 export default function Perfil() {
-    
+     const [nome, setNome] = useState(localStorage.getItem('nome'));
+      const [email, setEmail] = useState(localStorage.getItem('email'));
+      const [telefone, setTelefone] = useState(localStorage.getItem('telefone'));
+
     return (
         <div style={{position:'relative', top:'60px', bottom:'60px'}}>
              <ContentSession style={{
@@ -38,9 +41,9 @@ export default function Perfil() {
                                 
                                   
                                    <form>
-                                       <Input type="text" name="nome" value="Kambaia Alberto" placeholder="Seu nome completo"/>
-                                       <Input type="email" name="email" value="kambaiaalberto@gmail.com" placeholder="Seu nome email"/>
-                                       <Input type="email" name="email" value="934883090" placeholder="Seu nome Telefone"/>
+                                       <Input type="text" name="nome" value={nome && nome} placeholder="Seu nome completo"/>
+                                       <Input type="email" name="email" value={email&& email} placeholder="Seu nome email"/>
+                                       <Input type="telefone" name="telefone" value={telefone&&telefone} placeholder="Seu nome Telefone"/>
                                       <div className="btn-up">
                                             <Button value="Actualizar"/>
                                       </div>

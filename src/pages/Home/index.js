@@ -5,9 +5,19 @@ import bainner from '../../assets/bainner.webp';
 import * as FaIcons from 'react-icons/fa';
 import CardRecBook from '../../components/CardRecBook/CardRecBook';
 import { getAllCateory } from '../../services/ApiCategory';
-
+import {
+  getAllBooks,
+} from "../../services/ApiBooks";
 export default function Home() {
+ const [livros, setLivros] = useState([]);
+ useEffect(() => {
+      getBooks();
+  }, []);
 
+ const getBooks = async () => {
+    const books = await getAllBooks();
+    setLivros(books);
+  };
     return ( 
     <div style = {
             { position: 'relative', top: '60px', bottom: '60px' }
@@ -18,20 +28,34 @@ export default function Home() {
         </ContentSession> 
         <ContentSession style = {
             {
+                height:'300px',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
+                backgroundAttachment:'fixed',
                 backgroundRepeat: 'no-repeat',
                 backgroundImage: ` linear-gradient(to right, rgba(0,0,0,1) 30%, transparent 90%), url(${bainner})`
             }
         } >
-        <Categoria titulo = "Os mais lidos por todos os estudantes" style = {
-            { color: "#fff" }
-        }/>
+       
         <div className = "bainner-titulo" >
-            <h1 > Todos os dias você aprende uma coisa nova aqui no seu gabarito de conhecimento </h1> 
-        </div > </ContentSession>
+            <h1 > Todos os dias você aprende uma coisa nova aqui no seu gabarito de conhecimento de monografias </h1> 
+        </div > 
+      </ContentSession>
         <ContentSession >
-        <CardRecBook />
+        {livros.length > 0 ? (
+          livros.map((item, index) => {
+          if(index >=10 && index <=13)
+           return(
+            <CardRecBook item={item} key={index}/>
+          )})
+        ) : (
+          <h3
+            style={{ borderTop: "1px solid #ddd", padding: 20, width: "100%" }}
+          >
+            Nenhum Livro disponivel de momento
+          </h3>
+        )}
+      
         </ContentSession> 
         <ContentSession >
         <div style = {

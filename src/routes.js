@@ -12,6 +12,8 @@ import Livros from "./pages/Livros";
 import Documents from "./pages/Documents";
 import RegistroLivros from "./pages/RegistroLivros";
 import Perfil from "./pages/Perfil";
+import Favorito from "./pages/LivrosFavorito";
+import Recomendado from "./pages/Recomendado";
 import PrivateRouter from "./config/auth/PrivateRouter";
 
 
@@ -26,7 +28,9 @@ const MainRouter = () =>{
             <Route exact path="/livros/:id"><Documents/></Route>
             <Route exact path="/procurar"><Procurar/> </Route>
             <PrivateRouter exact path="/perfil"><Perfil/> </PrivateRouter>
+            <PrivateRouter exact path="/favorito"><Favorito/> </PrivateRouter>
             <PrivateRouter exact path="/registro"><RegistroLivros/> </PrivateRouter>
+            <PrivateRouter exact path="/recomendo"><Recomendado/> </PrivateRouter>
             </Switch>
         </Router>
        

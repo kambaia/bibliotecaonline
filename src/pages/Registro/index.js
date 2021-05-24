@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Input from '../../components/Input';
 import { Form} from './styles';
-import * as FaIcons from 'react-icons/fa';
+
 import * as BIIcons from 'react-icons/bi';
-import { FormAuth } from '../../providers/auth';
+
 import Button from '../../components/Button';
-import { SigUpUser } from '../../services/ApiUsers';
+import { SignUpUser} from '../../services/ApiUsers';
 
 export default function Registro() {
-    const {form, setForm } = FormAuth();
+    const [form, setForm]= useState({});
     const  onSubmit = async (e) => {
         e.preventDefault();
-        const result = await SigUpUser(form);
+        const result = await SignUpUser(form);
         setForm({nome:'', email:'',  senha:'', telefone:''})
 
     }
@@ -27,11 +27,12 @@ export default function Registro() {
                 <Input placeholder="Nome Completo" type="text" value={form.nome}  name={'nome'} onchange={onChange}/>
                 <Input placeholder="Telefone" type="text" value={form.telefone}  name={'telefone'} onchange={onChange}/>
                 <Input placeholder="E-email" type="text" value={form.email}  name={'email'} onchange={onChange}/>
+                <Input placeholder="Nº de matricula" type="text" value={form.numero_m}  name={'numero_m'} onchange={onChange}/>
                 <Input placeholder="senha" type="password" value={form.senha}  name={'senha'} onchange={onChange}/>
                 <Input placeholder="" type="date" value={form.datacadastro}  name={'datacadastro'} onchange={onChange}/>
             </form>
         <div className="f-registro">
-            <a>Esqueceu a sua senha?</a>
+        Já tens uma conta? <a href='/login'>click aqui </a>
             <div className="btn-registro">
                 <Button onClick={onSubmit} value={"Registro"}><span><BIIcons.BiLogIn/></span></Button>
             </div>

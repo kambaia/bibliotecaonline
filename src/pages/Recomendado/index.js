@@ -10,14 +10,13 @@ import * as FaIcons from "react-icons/fa";
 import * as GrIcons from "react-icons/gr";
 import * as MdIcons from "react-icons/md";
 
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory} from "react-router-dom";
 
-export default function Livros() {
+export default function Recomendado() {
   const { livro, id } = useParams();
   const [livros, setLivros] = useState([]);
   const [cat, setcat] = useState();
-  const [busca, setBusca] = useState("");
-  let history = useHistory();
+ const [busca, setBusca] = useState('');
   useEffect(() => {
     if (id) {
       getBooksWithCategory(id);
@@ -36,7 +35,7 @@ export default function Livros() {
     setLivros(booksCategory);
   };
   const favoritar = async (item, gostou) => {
-    console.log(item);
+      console.log(item)
     if (item) {
       const {
         _id,
@@ -49,29 +48,31 @@ export default function Livros() {
         Descricao,
       } = item;
       const id = _id;
-      const livro = {
-        titulo: titulo,
-        ano: ano,
-        numero_pagina: numero_pagina,
-        instituicao: instituicao,
-        formato: formato,
-        licenca: licenca,
-        Descricao: Descricao,
-      };
-      if (gostou === "activo") {
-        livro.favorito = "desativado";
-        const resp = await Favoritar(livro, id);
-      } else if (gostou === "desativado") {
-        livro.favorito = "activo";
-        const resp = await Favoritar(livro, id);
+        const livro = {
+            titulo: titulo,
+            ano: ano,
+            numero_pagina: numero_pagina,
+            instituicao: instituicao,
+            formato: formato,
+            licenca: licenca,
+            Descricao: Descricao
+        }
+        if (gostou ==="activo") {
+            livro.favorito= "desativado";
+            const resp = await Favoritar(livro, id);
+        } else if (gostou==="desativado") {
+            livro.favorito= "activo";
+            const resp = await Favoritar(livro, id);
+        }
+        
       }
-    }
-    const books = await getAllBooks();
-    setLivros(books);
-    console.log(books);
+      const books = await getAllBooks();
+      setLivros(books);
+      console.log(books);
   };
-  const handleChange = (event) => {
-    setBusca(event.target.value);
+ const handleChange = (event) => {
+        setBusca(event.target.value)
+
   };
   let filtered = livros.filter((file) => {
     return (
@@ -87,17 +88,13 @@ export default function Livros() {
         style={{
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundAttachment: "fixed",
           backgroundRepeat: "no-repeat",
           backgroundImage: ` linear-gradient(to right, rgba(0,0,0,1) 30%, transparent 90%), url(${bainner})`,
         }}
       >
         <div className="bainner-titulo">
           <div className="pesquisar">
-            <input
-              placeholder="Buscar por um livro, Ex: A fitoria de estudar"
-              onChange={handleChange}
-            />
+            <input placeholder="Buscar por um livro, Ex: A fitoria de estudar" onChange={handleChange} />
             <button>
               <FaIcons.FaSearch />
             </button>
@@ -144,7 +141,7 @@ const CardBooxList = ({ item, favoritar }) => {
   }, []);
   return (
     <>
-      {item ? (
+      {item.recomedado.length >=5? (
         <CardBooks>
           <a href={`/livros/${item._id}`}>
             <div className="card-capa">
@@ -172,9 +169,11 @@ const CardBooxList = ({ item, favoritar }) => {
               </li>
               {localStorage.getItem("app-web") ? (
                 <li>
-                  <a onClick={() => favoritar(item, activo, setActivo(activo))}>
+                  <a
+                    onClick={() => favoritar(item, activo, setActivo(activo))}
+                  >
                     <span>
-                      {activo === "activo" ? (
+                      {activo==='activo'? (
                         <MdIcons.MdFavorite color="#d00" />
                       ) : (
                         <GrIcons.GrFavorite />
@@ -188,12 +187,7 @@ const CardBooxList = ({ item, favoritar }) => {
             </ul>
             <div className="baixar">
               <span>
-                <a
-                  target="_blank"
-                  href={
-                    item.documento.documento_url && item.documento.documento_url
-                  }
-                >
+                <a target="_blank" href={item.documento.documento_url}>
                   <span style={{ color: "#0c854e" }}>
                     <FaIcons.FaBookReader color="#0c854e" /> Ler
                   </span>
