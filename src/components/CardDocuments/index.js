@@ -65,7 +65,7 @@ const CardBooxList = ({ item })=>{
                     <img src={item.capa_ul}/>
                 </div>
                 <div className="card-desc">
-                  <span>{item.titulo}</span>
+                  <span>{item.tema}</span>
                 </div>
 
                 <div className="rodape">

@@ -40,22 +40,20 @@ export default function Livros() {
     if (item) {
       const {
         _id,
-        titulo,
+        tema,
         ano,
         numero_pagina,
         instituicao,
         formato,
-        licenca,
         Descricao,
       } = item;
       const id = _id;
       const livro = {
-        titulo: titulo,
+        titulo: tema,
         ano: ano,
         numero_pagina: numero_pagina,
         instituicao: instituicao,
         formato: formato,
-        licenca: licenca,
         Descricao: Descricao,
       };
       if (gostou === "activo") {
@@ -75,7 +73,7 @@ export default function Livros() {
   };
   let filtered = livros.filter((file) => {
     return (
-      file.titulo.toLowerCase().indexOf(busca) !== -1 ||
+      file.tema.toLowerCase().indexOf(busca) !== -1 ||
       file.ano.toUpperCase().indexOf(busca) !== -1 ||
       file.instituicao.toLowerCase().indexOf(busca) !== -1 ||
       file.Descricao.toUpperCase().indexOf(busca) !== -1
@@ -151,7 +149,7 @@ const CardBooxList = ({ item, favoritar }) => {
               <img src={item.capa_ul} />
             </div>
             <div className="card-desc">
-              <span>{item.titulo}</span>
+              <span>{item.tema}</span>
             </div>
           </a>
           <div className="rodape">

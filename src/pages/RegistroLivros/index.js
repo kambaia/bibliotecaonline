@@ -19,10 +19,12 @@ import { RegistrarBook, getAllBooks } from "../../services/ApiBooks";
 import { RegistrarCategoria, getAllCateory } from "../../services/ApiCategory";
 import sweetalert from "sweetalert";
 import * as FaIcons from "react-icons/fa";
+import Recomendado from "../Recomendado";
 
 export default function RegistroLivros() {
   const [formMenu, setformMenu] = useState("");
   const [form, setForm] = useState({});
+
 
   return (
     <>
@@ -96,6 +98,7 @@ export const RegistrarLivro = () => {
   const [doc, setDoc] = useState([]);
   const [info, setInfo] = useState({ id: "" });
   const [msg, setMsg] = useState("");
+   const [checked, setChecked] = useState({})
 
   const [autor, setAutor] = useState([]);
 
@@ -172,13 +175,12 @@ export const RegistrarLivro = () => {
     const { _id } = usuario;
     data.append("capa", foto);
     data.append("autor", form.autor);
-    data.append("titulo", form.titulo);
+    data.append("tema", form.titulo);
     data.append("ano", form.ano);
     data.append("recomedado", [1, 2, 3]);
-    data.append("numero_pagina", form.doc);
+    data.append("numero_pagina", form.numero_pagina);
     data.append("instituicao", form.instituicao);
     data.append("Descricao", form.descricao);
-    data.append("licenca", form.licenca);
     data.append("categoria", form.categoria);
     data.append("formato", "PDF");
     data.append("documento", form.documento);
@@ -206,6 +208,7 @@ export const RegistrarLivro = () => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
+
   return (
     <>
       <div className="info">
@@ -302,22 +305,9 @@ export const RegistrarLivro = () => {
                       onchange={onChange}
                       placeholder={"Ano de lançamento do livro"}
                     />
-                    <select
-                      className="select-op"
-                      name="licenca"
-                      value={form.licenca}
-                      onChange={onChange}
-                    >
-                      <option disabled selected>
-                        Ano de lançamento
-                      </option>
-                      <option value="público">público</option>
-                      <option value="privado">Privado</option>
-                    </select>
+                   
                   </div>
-                  <div>
-                      <h3>Número de Recomendados?</h3>
-                   </div>
+                 
                   <div
                     style={{
                       display: "flex",
@@ -326,11 +316,6 @@ export const RegistrarLivro = () => {
                       marginBottom: 10,
                     }}
                   >
-                    <input className="checks" type="checkbox" />
-                    <input type="checkbox" />
-                    <input type="checkbox" />
-                    <input type="checkbox" />
-                    <input type="checkbox" />
                   </div>
                   <Input
                     type="text"

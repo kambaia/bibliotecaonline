@@ -74,9 +74,10 @@ export default function Recomendado() {
         setBusca(event.target.value)
 
   };
+
   let filtered = livros.filter((file) => {
     return (
-      file.titulo.toLowerCase().indexOf(busca) !== -1 ||
+      file.tema.toLowerCase().indexOf(busca) !== -1 ||
       file.ano.toUpperCase().indexOf(busca) !== -1 ||
       file.instituicao.toLowerCase().indexOf(busca) !== -1 ||
       file.Descricao.toUpperCase().indexOf(busca) !== -1
