@@ -11,7 +11,6 @@ export const RegistrarDocumento = (form)=> {
                 url: `${URL_documents}`,
                 headers: {'Authorization': 'Bearer ' +  `${token}`},
                data: form
-            
             };
             const response = await axios(config);
             

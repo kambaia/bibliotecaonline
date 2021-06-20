@@ -25,7 +25,6 @@ export default function RegistroLivros() {
   const [formMenu, setformMenu] = useState("");
   const [form, setForm] = useState({});
 
-
   return (
     <>
       <div style={{ position: "relative", top: "60px", bottom: "60px" }}>
@@ -98,7 +97,7 @@ export const RegistrarLivro = () => {
   const [doc, setDoc] = useState([]);
   const [info, setInfo] = useState({ id: "" });
   const [msg, setMsg] = useState("");
-   const [checked, setChecked] = useState({})
+  const [checked, setChecked] = useState({});
 
   const [autor, setAutor] = useState([]);
 
@@ -184,6 +183,7 @@ export const RegistrarLivro = () => {
     data.append("categoria", form.categoria);
     data.append("formato", "PDF");
     data.append("documento", form.documento);
+
     const result = await RegistrarBook(data, _id);
     const { mesagm } = result;
     sweetalert({
@@ -219,6 +219,7 @@ export const RegistrarLivro = () => {
           ) : (
             <div className="card-form-doc">
               <form onSubmit={onSubmitDoc}>
+                <label>Carregar o Documento</label>
                 <Input
                   type="file"
                   name="doc"
@@ -238,6 +239,7 @@ export const RegistrarLivro = () => {
             <>
               <div className="card-form-doc">
                 <form onSubmit={onSubmit}>
+                  <label>Carregar Capa  do Documento</label>
                   <label
                     id="foto"
                     style={{ backgroundImage: `url(${PreverFoto})` }}
@@ -305,9 +307,8 @@ export const RegistrarLivro = () => {
                       onchange={onChange}
                       placeholder={"Ano de lançamento do livro"}
                     />
-                   
                   </div>
-                 
+
                   <div
                     style={{
                       display: "flex",
@@ -315,8 +316,7 @@ export const RegistrarLivro = () => {
                       marginTop: 10,
                       marginBottom: 10,
                     }}
-                  >
-                  </div>
+                  ></div>
                   <Input
                     type="text"
                     name="instituicao"

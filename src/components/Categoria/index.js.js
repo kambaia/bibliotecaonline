@@ -6,7 +6,7 @@ export default function index() {
         <Containner>
             <div className="content">
             <div className="logo">
-                Encontre o seu conhecimento
+                Encontre os melhores trabalhos aqui
             </div>
            <ul>
                <li><a href="#"><span><FaIcons.FaBook color="#0c854e" size={15}/></span>Livros dos escolar</a></li>

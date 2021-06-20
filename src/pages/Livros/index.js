@@ -26,7 +26,6 @@ export default function Livros() {
       getBooks();
     }
   }, []);
-
   const getBooks = async () => {
     const books = await getAllBooks();
     setLivros(books);
@@ -38,15 +37,8 @@ export default function Livros() {
   const favoritar = async (item, gostou) => {
     console.log(item);
     if (item) {
-      const {
-        _id,
-        tema,
-        ano,
-        numero_pagina,
-        instituicao,
-        formato,
-        Descricao,
-      } = item;
+      const { _id, tema, ano, numero_pagina, instituicao, formato, Descricao } =
+        item;
       const id = _id;
       const livro = {
         titulo: tema,
@@ -151,18 +143,27 @@ const CardBooxList = ({ item, favoritar }) => {
             <div className="card-desc">
               <span>{item.tema}</span>
             </div>
+           
           </a>
+             <article className="card-article">
+              <strong>Autor:  <br/> </strong>
+              <span>{item.autor.nome}</span>
+            </article>
           <div className="rodape">
             <ul>
               <li>
-                <a href="">
+              <a target="_blank"
+                  href={
+                    item.autor.link && item.autor.link
+                  }
+                >
                   <span>
                     <FaIcons.FaFacebookF />
                   </span>
                 </a>
               </li>
               <li>
-                <a href="">
+              <a href="#">
                   <span>
                     <FaIcons.FaYoutube />
                   </span>
@@ -203,6 +204,7 @@ const CardBooxList = ({ item, favoritar }) => {
       ) : (
         ""
       )}
+<hr/>
     </>
   );
 };
