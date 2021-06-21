@@ -6,13 +6,30 @@ import * as BIIcons from 'react-icons/bi';
 
 import Button from '../../components/Button';
 import { SignUpUser} from '../../services/ApiUsers';
-
+import sweetalert from "sweetalert";
 export default function Registro() {
-    const [form, setForm]= useState({});
+    const [form, setForm]= useState({nome:'', email:'', telefone:'', numero_m:'', senha:'', datacadastro:''});
     const  onSubmit = async (e) => {
         e.preventDefault();
-        const result = await SignUpUser(form);
-        setForm({nome:'', email:'',  senha:'', telefone:''})
+        if(form.nome ==='' || form.numero_m ==='' || form.telefone==='' || form.email==='', form.senha===''){
+                sweetalert({
+                    title: "Erro de inserção",
+                    text: "Preencha todos os campos!",
+                    icon: "error",
+                    timer: 4000,
+                });
+                return false;
+                }else{
+                     const result = await SignUpUser(form);
+                       sweetalert({
+                    title: "Logado",
+                    text: "Lugado com sucesso",
+                    icon: "success",
+                    timer: 4000,
+                });  
+                    setForm({nome:'', email:'',  senha:'', telefone:'', numero_m:''})
+            }
+      
 
     }
     const onChange = (e)=>{

@@ -11,6 +11,7 @@ export const ButtonFilder = styled.div`
       margin-right:5%;
       color:#fff;
       border-radius:5px;
+      cursor:pointer;
     }
 `
 

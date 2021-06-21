@@ -63,13 +63,13 @@ export default function Login() {
   );
 }
 export const LoginForm = () => {
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({ email:'', senha:''});
   const dispatch = useDispatch();
   let history = useHistory();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (form.email === "") {
+    if (form.email === '') {
       sweetalert({
         title: "Erro de inserção",
         text: "Entroduza o seu email",
@@ -78,7 +78,7 @@ export const LoginForm = () => {
       });
       return false;
     }
-    if (form.senha === "") {
+    if (form.senha === '') {
       sweetalert({
         title: "Erro de inserção",
         text: "Introduza uma palavra-passe",
