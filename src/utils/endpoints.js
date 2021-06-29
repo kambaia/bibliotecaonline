@@ -1,4 +1,4 @@
-const URL_BASE = "http://localhost/api";
+const URL_BASE = "http://localhost:5000/api";
 
 const URL_REGISTER = `${URL_BASE}/usuario`;
 const URL_access = `${URL_BASE}/auth`;

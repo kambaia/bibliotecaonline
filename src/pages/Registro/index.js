@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Input from '../../components/Input';
 import { Form} from './styles';
-
+import { useHistory, Link } from "react-router-dom";
 import * as BIIcons from 'react-icons/bi';
 
 import Button from '../../components/Button';
@@ -9,6 +9,7 @@ import { SignUpUser} from '../../services/ApiUsers';
 import sweetalert from "sweetalert";
 export default function Registro() {
     const [form, setForm]= useState({nome:'', email:'', telefone:'', numero_m:'', senha:'', datacadastro:''});
+    const history  = useHistory();
     const  onSubmit = async (e) => {
         e.preventDefault();
         if(form.nome ==='' || form.numero_m ==='' || form.telefone==='' || form.email==='', form.senha===''){
@@ -22,12 +23,13 @@ export default function Registro() {
                 }else{
                      const result = await SignUpUser(form);
                        sweetalert({
-                    title: "Logado",
-                    text: "Lugado com sucesso",
+                    title: "Faça já o login para ter acesso os livros",
+                    text: "Cadastrado com sucesso.",
                     icon: "success",
                     timer: 4000,
                 });  
-                    setForm({nome:'', email:'',  senha:'', telefone:'', numero_m:''})
+         history.push("/login");
+         setForm({nome:'', email:'',  senha:'', telefone:'', numero_m:''})
             }
       
 

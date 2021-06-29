@@ -169,22 +169,9 @@ export const RegistrarLivro = () => {
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    const usuario = JSON.parse(localStorage.getItem("usuario"));
-    const { _id } = usuario;
-    data.append("capa", foto);
-    data.append("autor", form.autor);
-    data.append("tema", form.titulo);
-    data.append("ano", form.ano);
-    data.append("recomedado", [1, 2, 3]);
-    data.append("numero_pagina", form.numero_pagina);
-    data.append("instituicao", form.instituicao);
-    data.append("Descricao", form.descricao);
-    data.append("categoria", form.categoria);
-    data.append("formato", "PDF");
-    data.append("documento", form.documento);
-
-    const result = await RegistrarBook(data, _id);
+    const id_usuario = localStorage.getItem("id");
+    console.log(id_usuario)
+    const result = await RegistrarBook(form, foto, id_usuario);
     const { mesagm } = result;
     sweetalert({
       title: "Confirmação de inserção",

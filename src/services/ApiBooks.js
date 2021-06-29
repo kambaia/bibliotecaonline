@@ -1,7 +1,21 @@
 import axios from 'axios'
 import { URL_Books_Register,URL_BookFavoriting} from '../utils/endpoints';
-export const RegistrarBook = (form, id_usuario)=> {
-    console.log(form)
+export const RegistrarBook = (form,foto,id_usuario)=> {
+    console.log(form);
+    console.log(foto)
+    const data = new FormData();
+    data.append("capa", foto);
+    data.append("autor", form.autor);
+    data.append("tema", form.titulo);
+    data.append("ano", form.ano);
+    data.append("recomedado", [1, 2, 3]);
+    data.append("numero_pagina", form.numero_pagina);
+    data.append("instituicao", form.instituicao);
+    data.append("Descricao", form.descricao);
+    data.append("categoria", form.categoria);
+    data.append("formato", "PDF");
+    data.append("documento", form.documento);
+
     return new Promise(async function (resolve, reject) {
         const token =localStorage.getItem('app-token');
         try {
@@ -9,7 +23,7 @@ export const RegistrarBook = (form, id_usuario)=> {
                 method: 'post',
                 url: `${URL_Books_Register}`,
                 headers: {'Authorization': 'Bearer ' +  `${token}`, id_usuario},
-               data: form
+               data: data
             
             };
             const response = await axios(config);
