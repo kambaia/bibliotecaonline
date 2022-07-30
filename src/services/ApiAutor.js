@@ -21,6 +21,24 @@ export const RegistrarAutor = (form)=> {
         }
     })
 }
+
+export const getOneAutor = ({id})=> {
+    console.log(id)
+    return new Promise(async function (resolve, reject) {
+        try {
+            const token =localStorage.getItem('Mep:token');
+            const config = {
+                method: 'get',
+                url: `${URL_Autor}/${id}`,
+                headers: {'Authorization': 'Bearer ' +  `${token}`}
+            };
+            const response = await axios(config);
+            resolve(response.data);
+        } catch (error) {
+            reject("Erro", error)
+        }
+    })
+}
 export const getAllAutor = ()=> {
     return new Promise(async function (resolve, reject) {
         try {

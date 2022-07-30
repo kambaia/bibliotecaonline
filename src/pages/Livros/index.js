@@ -1,41 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { ContentSession, CardBooks } from "./styles";
+import { ContentSession, Containner, Content } from "./styles";
 import bainner from "../../assets/bainner.webp";
 import {
-  getAllBooks,
+  getAllBooksMonografia,
   getWithCategoryBooks,
   Favoritar,
+  getAllBooks
 } from "../../services/ApiBooks";
 import * as FaIcons from "react-icons/fa";
 import * as GrIcons from "react-icons/gr";
 import * as MdIcons from "react-icons/md";
 
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 export default function Livros() {
   const { livro, id } = useParams();
   const [livros, setLivros] = useState([]);
   const [cat, setcat] = useState();
   const [busca, setBusca] = useState("");
-  let history = useHistory();
+
   useEffect(() => {
-    if (id) {
-      getBooksWithCategory(id);
-      setcat(livro);
-    } else {
-      getBooks();
+    if(id){
+      getBooks(id);
+    }else{
+      getBooks(); 
     }
+
   }, []);
-  const getBooks = async () => {
-    const books = await getAllBooks();
-    setLivros(books);
+  const getBooks = async (id) => {
+    const book = await getAllBooks();
+    console.log(id)
+    if(id){
+       const novoLivros = book.filter((items)=>items.idCategoria === id);
+       setLivros(novoLivros)
+    }else{
+      setLivros(book);
+    }
+    
   };
-  const getBooksWithCategory = async () => {
-    const booksCategory = await getWithCategoryBooks(id);
-    setLivros(booksCategory);
-  };
+
+  const carregarTodosDaCategorias= async()=>{
+    const book = await getWithCategoryBooks(id);
+    
+  }
+
+
   const favoritar = async (item, gostou) => {
-    console.log(item);
     if (item) {
       const { _id, tema, ano, numero_pagina, instituicao, formato, Descricao } =
         item;
@@ -55,22 +65,18 @@ export default function Livros() {
         livro.favorito = "activo";
         const resp = await Favoritar(livro, id);
       }
-    }
-    const books = await getAllBooks();
-    setLivros(books);
-    console.log(books);
+    };
   };
   const handleChange = (event) => {
     setBusca(event.target.value);
   };
   let filtered = livros.filter((file) => {
     return (
-      file.tema.toLowerCase().indexOf(busca) !== -1 ||
-      file.ano.toUpperCase().indexOf(busca) !== -1 ||
-      file.instituicao.toLowerCase().indexOf(busca) !== -1 ||
-      file.Descricao.toUpperCase().indexOf(busca) !== -1
+      file.titulo.toUpperCase().indexOf(busca) !== -1 ||
+      file.titulo.toLowerCase().indexOf(busca) !== -1
     );
   });
+
   return (
     <div style={{ position: "relative", top: "60px", bottom: "60px" }}>
       <ContentSession
@@ -94,16 +100,6 @@ export default function Livros() {
           </div>
         </div>
       </ContentSession>
-
-      <ContentSession
-        style={{
-          width: "98%",
-          margin: "auto",
-          display: "flex",
-          flexWrap: "wrap",
-          marginBottom: "100px",
-        }}
-      >
         <div style={{ padding: 10, width: "100%" }}>
           {cat ? (
             <h2>{`Todos Livros de ${cat} disposição`}</h2>
@@ -112,9 +108,7 @@ export default function Livros() {
           )}{" "}
         </div>
         {filtered.length > 0 ? (
-          filtered.map((item, index) => (
-            <CardBooxList item={item} key={index} favoritar={favoritar} />
-          ))
+            <CardBooxList items={filtered}/>
         ) : (
           <h3
             style={{ borderTop: "1px solid #ddd", padding: 20, width: "100%" }}
@@ -122,85 +116,98 @@ export default function Livros() {
             Nenhum Livro disponivel de momento
           </h3>
         )}
-      </ContentSession>
     </div>
   );
 }
 
-const CardBooxList = ({ item, favoritar }) => {
-  const [activo, setActivo] = useState("");
-  useEffect(() => {
-    setActivo(item.favorito);
-  }, []);
+const CardBooxList = ({ items }) => {
+  const token = localStorage.getItem("app-web");
+  const [activo, setActivo] = useState(false);
+  const [correntActive, setCorrentActive] = useState(false);
+
+  const favoritar = async (id, gostou) => {
+       console.log(id);
+      if(correntActive ===id){
+        setActivo(!activo);
+      }
+  }
+
   return (
     <>
-      {item ? (
-        <CardBooks>
-          <a href={`/livros/${item._id}`}>
-            <div className="card-capa">
-              <img src={item.capa_ul} />
-            </div>
-            <div className="card-desc">
-              <span>{item.tema}</span>
-            </div>
-           
-          </a>
-             <article className="card-article">
-              <strong>Autor:  <br/> </strong>
-              <span>{item.autor.nome}</span>
-            </article>
-          <div className="rodape">
-            <ul>
-              <li>
-              <a target="_blank"
-                  href={
-                    item.autor.link && item.autor.link
-                  }
-                >
-                  <span>
-                    <FaIcons.FaFacebookF />
-                  </span>
-                </a>
-              </li>
-              <li>
-              <a href="#">
-                  <span>
-                    <FaIcons.FaYoutube />
-                  </span>
-                </a>
-              </li>
-              {localStorage.getItem("app-web") ? (
-                <li>
-                  <a onClick={() => favoritar(item, activo, setActivo(activo))}>
-                    <span>
-                      {activo === "activo" ? (
-                        <MdIcons.MdFavorite color="#d00" />
-                      ) : (
-                        <GrIcons.GrFavorite />
-                      )}
-                    </span>
-                  </a>
-                </li>
-              ) : (
-                ""
-              )}
-            </ul>
-            <div className="baixar">
-              <span>
-                <a
-                  target="_blank"
-                  href={
-                    item.documento.documento_url && item.documento.documento_url
-                  }
-                >
-                  <span style={{ color: "#0c854e" }}>
-                    <FaIcons.FaBookReader color="#0c854e" /> Ler
-                  </span>
-                </a>
-              </span>
-            </div>
-          </div>
-        </CardBooks>
+      {items? (
+         <Containner>
+         <Content>
+           {items &&
+             items.map((item, index) => (
+               <div className="item-book">
+                 <Link to={`livros/${item._id}`}>
+                   <div className="img-body">
+                     <img src={item.capa_ul} />
+                   </div>
+                 </Link>
+                 <div className="content-descri">
+                   <div className="item-tilulo">
+                     <h3>{item.titulo} </h3>
+                   </div>
+   
+                   <div className="item-discription">
+                     <span>
+                       <strong>Feito por: </strong>
+                       {item.nome_autor}
+                     </span>
+                     <div className="item-link-downlad">
+                       <div className="redes-social">
+                       {token ? (
+                         <>
+                         <p>
+                           <FaIcons.FaFacebookF color="#0c854e" />
+                         </p>
+                         <p>
+                           {" "}
+                           <FaIcons.FaBookReader color="#0c854e" />
+                         </p>
+                         <p>
+                           {" "}
+                           <FaIcons.FaYoutube color="#0c854e" />
+                         </p>
+                         </>
+                       ):""}
+                       </div>
+                       <div className="redes-social">
+                         <a  onClick={()=>{
+                           favoritar(item._id, activo, );
+                           setCorrentActive(item._id);
+                         }} style={{ cursor: "pointer" }}>
+                             {token ? (
+                           <span>
+                             { correntActive ===item._id && activo? (
+                               <MdIcons.MdFavorite color="#d00" />
+                             ) : (
+                               <GrIcons.GrFavorite />
+                             )}
+                           </span>
+                             ):""}
+                         </a>
+   
+                         
+                         <p style={{ cursor: "pointer" }}>
+                         {token ? (
+                           <a
+                             target="_blank"
+                             href={item.documento_url && item.documento_url}
+                           >
+                             <FaIcons.FaDownload />
+                           </a>
+                         ):""}
+                         </p>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             ))}
+         </Content>
+       </Containner>
       ) : (
         ""
       )}

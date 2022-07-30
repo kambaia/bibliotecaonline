@@ -35,13 +35,8 @@ export const CardForm = styled.div`
   .reader-top {
     border-bottom: 1px solid #ddd;
     display: flex;
-    width: 100%;
-    a{
-      background-color: #f00;
-      width: 100%;
-    }
     button {
-      width: 100%;
+      width: 24%;
       padding: 8px;
       background: #fff;
       border-style: none;

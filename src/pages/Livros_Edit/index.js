@@ -10,21 +10,21 @@ import bainner from "../../assets/bainner.webp";
 import Input, { Select, TextArea } from "../../components/Input";
 import Button from "../../components/Button";
 import SideBar from "../../components/SideBar";
-import { RegistrarAutor, getAllAutor } from "../../services/ApiAutor";
+import { RegistrarAutor, getAllAutor, getOneAutor } from "../../services/ApiAutor";
 import {
   RegistrarDocumento,
   getAllDocumento,
 } from "../../services/ApiDocumento";
-import { RegistrarBook } from "../../services/ApiBooks";
-import { RegistrarCategoria, getAllCateory } from "../../services/ApiCategory";
+import { updateBook, getOnlyBooks } from "../../services/ApiBooks";
+import { RegistrarCategoria, getAllCateory, getOnlyCagory } from "../../services/ApiCategory";
 import sweetalert from "sweetalert";
 import * as FaIcons from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function RegistroLivros() {
-  const [formMenu, setformMenu] = useState("");
-  const { page } = useParams();
-
+  const { id, livro } = useParams();
+  const [formMenu, setformMenu] = useState(livro);
+   console.log(id);
   return (
     <>
       <div style={{ position: "relative", top: "60px", bottom: "60px" }}>
@@ -55,25 +55,87 @@ export default function RegistroLivros() {
               </CardMenu>
               <CardForm>
                 <div className="reader-top">
-                  <Link to="/registro-livros/categoria">
-                    <button onClick={() => setformMenu("categoria")}>
-                      Categoria de livros
-                    </button>
-                  </Link>
-                  <Link to="/registro-livros/autor">
-                    <button onClick={() => setformMenu("autor")}>Autor</button>
-                  </Link>
-                  <Link to="/registro-livros/livro">
-                  <button
-                    onClick={() => setformMenu("livro")}
-                    style={{ borderRight: "1px solid #ddd" }}
-                  >
-                    Livro
-                  </button>
-                  </Link>
+                  {livro === "livros" ? (
+                    <>
+                      <button
+                        onClick={() => setformMenu("livro")}
+                        style={{ borderRight: "1px solid #ddd" }}
+                      >
+                        Livro
+                      </button>
+                      <button
+                        disabled={true}
+                        onClick={() => setformMenu("categoria")}
+                      >
+                        Categoria de livros
+                      </button>
+                      <button
+                        disabled={true}
+                        onClick={() => setformMenu("author ")}
+                      >
+                        Autor
+                      </button>
+                    </>
+                  ) : (
+                    ""
+                  )}
+
+                  {livro === "author" ? (
+                    <>
+                      <button
+                        disabled={true}
+                        onClick={() => setformMenu("categoria")}
+                      >
+                        Categoria de livros
+                      </button>
+                      <button
+                        disabled={false}
+                        onClick={() => setformMenu("author")}
+                      >
+                        Autor
+                      </button>
+
+                      <button
+                        disabled={true}
+                        onClick={() => setformMenu("livro")}
+                        style={{ borderRight: "1px solid #ddd" }}
+                      >
+                        Livro
+                      </button>
+                    </>
+                  ) : (
+                    ""
+                  )}
+
+                  {livro === "categoria" ? (
+                    <>
+                      <button
+                        disabled={false}
+                        onClick={() => setformMenu("categoria")}
+                      >
+                        Categoria de livros
+                      </button>
+                      <button
+                        disabled={true}
+                        onClick={() => setformMenu("author")}
+                      >
+                        Autor
+                      </button>
+
+                      <button
+                        disabled={true}
+                        onClick={() => setformMenu("livro")}
+                        style={{ borderRight: "1px solid #ddd" }}
+                      >
+                        Livro
+                      </button>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div>
-                  <FormOp op={formMenu} page={page} />
+                  <FormOp op={formMenu} tela={livro} id={id} />
                 </div>
               </CardForm>
             </Content>
@@ -84,35 +146,35 @@ export default function RegistroLivros() {
   );
 }
 
-export const FormOp = ({ op, page}) => {
-
-  if (op === "categoria" && page === "categoria") {
-    return <RegestroCategoria />;
-  } else if (op === "autor" && page === "autor") {
-    console.log(page, op)
-    return <RegistroAutor />;
-  } else if (op === "livro"&& page === "livro" ) {
-    return <RegistrarLivro />;
+export const FormOp = ({ op, tela, id }) => {
+  console.log(op, " ", tela);
+  if (op == "categoria" && tela === "categoria") {
+    return <RegestroCategoria id={id} />;
+  } else if (op === "author" && tela === "author") {
+    return <RegistroAutor id={id} />;
+  }
+  if (op == "livros" && tela === "livros") {
+    return <RegistrarLivro id={id} />;
   } else {
-    return <RegestroCategoria />;
+    return <RegestroCategoria id={id} />;
   }
 };
 
-export const RegistrarLivro = () => {
+export const RegistrarLivro = ({ id }) => {
   const [foto, setFoto] = useState(null);
   const [documento, setDocumento] = useState({});
   const [categoria, setCategoria] = useState([]);
+  const [livroEdit, setLivroEdit] = useState([]);
   const [doc, setDoc] = useState([]);
   const [info, setInfo] = useState({ id: "" });
   const [msg, setMsg] = useState("");
-  const [checked, setChecked] = useState({});
+  const [trocarDoc, setTrocarDoc] = useState(true);
 
   const [autor, setAutor] = useState([]);
 
   const PreverFoto = useMemo(() => {
     return foto ? URL.createObjectURL(foto) : null;
   }, [foto]);
-
   const [form, setForm] = useState({});
   useEffect(() => {
     if (categoria) {
@@ -124,6 +186,8 @@ export const RegistrarLivro = () => {
     if (doc) {
       getDocument();
     }
+    pegar_livro(id);
+    trocarDocumento(form?.documento_url);
   }, []);
 
   const getCategoria = async () => {
@@ -137,6 +201,12 @@ export const RegistrarLivro = () => {
       setCategoria(cat);
     }
   };
+
+  const pegar_livro = async (id) => {
+    const result = await getOnlyBooks(id);
+    setForm(result.livros[0]);
+  };
+
   const getDocument = async () => {
     let document = [];
     const result = await getAllDocumento();
@@ -186,16 +256,27 @@ export const RegistrarLivro = () => {
     }
   };
 
+  const subEdit = () => {
+    const newform = {
+      foto: foto ? foto : form.capa_ul,
+      documento: info._id ? info._id : form.documento,
+      numero_pagina: form.numero_pagina,
+      ano: form.ano,
+      titulo: form.titulo,
+      descricao: form.descricao,
+    };
+    return newform;
+  };
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    const formd = subEdit();
     if (
-      !foto ||
-      !form.autor ||
-      !form.titulo ||
-      !form.numero_pagina ||
-      !form.descricao ||
-      !form.categoria ||
-      !form.documento
+      !formd.titulo ||
+      !formd.numero_pagina ||
+      !formd.ano ||
+      !formd.descricao ||
+      !formd.documento
     ) {
       sweetalert({
         title: "Erro de inserção",
@@ -206,21 +287,20 @@ export const RegistrarLivro = () => {
       return false;
     } else {
       const data = new FormData();
-      const id = localStorage.getItem("id");
-      data.append("capa", foto);
-      data.append("autor", form.autor);
-      data.append("titulo", form.titulo);
-      data.append("ano", form.ano);
-      data.append("recomedado", [1, 2, 3]);
-      data.append("numero_pagina", form.numero_pagina);
-      data.append("instituicao", "Martíres do Uganda");
-      data.append("descricao", form.descricao);
-      data.append("categoria", form.categoria);
-      data.append("formato", "PDF");
-      data.append("documento", form.documento);
-      data.append("publicidade", form.publicidade)
+      if (foto) {
+        console.log("Entrei aqui")
+        data.append("capa", foto);
+        data.append("titulo", formd.titulo);
+        data.append("ano", formd.ano);
+        data.append("numero_pagina", formd.numero_pagina);
+        data.append("descricao", formd.descricao);
+        data.append("documento", formd.documento);
+         const result = await updateBook(data, form._id);
+      }else{
+        const result = await updateBook(formd, form._id);
+      }
 
-      const result = await RegistrarBook(data, id);
+      /* const result = await RegistrarBook(data, id);
       const { mesagm } = result;
       sweetalert({
         title: "Confirmação de inserção",
@@ -228,7 +308,8 @@ export const RegistrarLivro = () => {
         icon: "success",
         buttons: "OK",
       });
-      setFoto(null);
+      */
+      /*
       setForm({
         autor: "",
         titulo: "",
@@ -238,15 +319,22 @@ export const RegistrarLivro = () => {
         descricao: "",
         licenca: "",
         categoria: "",
-        publicidade:"",
-        
         documento,
       });
+      */
     }
   };
+
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
+  };
+
+  const trocarDocumento = (e) => {
+    if (e) {
+      setTrocarDoc(trocarDoc);
+      console.log("Não");
+    }
   };
 
   return (
@@ -259,18 +347,46 @@ export const RegistrarLivro = () => {
           ) : (
             <div className="card-form-doc">
               <form onSubmit={onSubmitDoc}>
-                <label>Carregar o Documento</label>
-                <Input
-                  type="file"
-                  name="doc"
-                  accept=".pdf"
-                  onchange={(event) =>
-                    setDocumento({ ...documento, doc: event.target.files[0] })
-                  }
-                />
-                <div className="btn-up">
-                  <Button value="Salvar" />
-                </div>
+                {trocarDoc ? (
+                  <>
+                    <div style={{ padding: "20px" }}>
+                      <button
+                        style={{
+                          width: "40%",
+                          padding: "8px",
+                          backgroundColor: "#0c854e",
+                          border: "1px solid #fff",
+                          marginTop: "10px",
+                          marginRight: "5%",
+                          color: "#fff",
+                          borderRadius: "5px",
+                          cursor: "pointer",
+                        }}
+                        type="button"
+                        onClick={() => setTrocarDoc(!trocarDoc)}
+                      >
+                        Pretendes carregar outro documento?
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <label>Carregar o Documento</label>
+                    <Input
+                      type="file"
+                      name="doc"
+                      onchange={(event) =>
+                        setDocumento({
+                          ...documento,
+                          doc: event.target.files[0],
+                        })
+                      }
+                    />
+                    <div className="btn-up">
+                      <Button value="Salvar" />
+                    </div>
+                  </>
+                )}
               </form>
             </div>
           )}
@@ -283,41 +399,32 @@ export const RegistrarLivro = () => {
                   <label>Carregar Capa do Documento</label>
                   <label
                     id="foto"
-                    style={{ backgroundImage: `url(${PreverFoto})` }}
+                    style={{
+                      backgroundImage: `url(${
+                        form.capa_ul && !PreverFoto ? form.capa_ul : PreverFoto
+                      })`,
+                    }}
                     className={foto ? "remove-elemet" : ""}
                   >
                     <Input
                       type="file"
                       name="foto_autor"
-                      value={form.foto}
-                      accept="image/*"
                       onchange={(event) => setFoto(event.target.files[0])}
                     />
                     <FaIcons.FaCamera className="icon" size={25} color="#555" />
                   </label>
 
-                  <Select
-                    name="categoria"
-                    text={"Seleciona a catégoria"}
-                    data={categoria}
-                    onchange={onChange}
-                  />
-                  <Select
-                    name="autor"
-                    value={form.autor}
-                    text={"Seleciona o autor"}
-                    data={autor}
-                    onchange={onChange}
-                  />
                   <select
                     className="select-op"
                     name="documento"
                     onChange={onChange}
                   >
                     <option disabled selected>
-                      Seleciona o Arquivo
+                      {info.id ? info.odc : "Seleciona o Arquivo"}
                     </option>
-                    <option value={info._id}>{info.doc}</option>
+                    <option value={info.id ? info.id : form.documento}>
+                      {info.doc ? info.doc : form?.documento_url}
+                    </option>
                   </select>
 
                   <Input
@@ -359,15 +466,8 @@ export const RegistrarLivro = () => {
                       marginBottom: 10,
                     }}
                   ></div>
-                  <Input
-                    type="text"
-                    name="instituicao"
-                    value={"Martíres do Uganda"}
-                    onchange={onChange}
-                    placeholder={"Instituição"}
-                  />
-                 
-                   <TextArea
+
+                  <TextArea
                     name="descricao"
                     value={form.descricao}
                     text={"Digite aqui a discrição do livro"}
@@ -376,15 +476,8 @@ export const RegistrarLivro = () => {
                     cols="50"
                     onchange={onChange}
                   />
-                   <Input
-                    type="text"
-                    name="publicidade"
-                    value={form.publicidade}
-                    onchange={onChange}
-                    placeholder={"Se ouver uma nova publicidade adiciona aqui o link"}
-                  />
                   <div className="btn-up">
-                    <Button value="Salvar" />
+                    <Button value="Enditar o livro" />
                   </div>
                 </form>
               </div>
@@ -397,13 +490,19 @@ export const RegistrarLivro = () => {
   );
 };
 
-export const RegistroAutor = () => {
-  const [foto, setFoto] = useState(null);
-  const PreverFoto = useMemo(() => {
-    return foto ? URL.createObjectURL(foto) : null;
-  }, [foto]);
-
+export const RegistroAutor = (id) => {
   const [form, setForm] = useState({});
+  useEffect(()=>{
+    const getAutor= async(id)=>{
+      const result = await  getOneAutor(id)
+      setForm(result);
+    }
+    if(id){
+      getAutor(id);
+    }
+  
+  }, [])
+
   const onSubmit = async (e) => {
     e.preventDefault();
     console.log(form);
@@ -411,11 +510,6 @@ export const RegistroAutor = () => {
       return console.log("DIgite a categoria do livro que desejas cadastrar");
     } else {
       const data = new FormData();
-      data.append("foto_autor", foto);
-      data.append("nome", form.nome);
-      data.append("bibliografia", form.bibliografia);
-      data.append("link", form.link);
-
       const result = await RegistrarAutor(data);
       sweetalert({
         title: "Confirmação de inserção",
@@ -435,19 +529,7 @@ export const RegistroAutor = () => {
     <div className="info">
       <h3>Regostro de Autores </h3>
       <form onSubmit={onSubmit}>
-        <label
-          id="foto"
-          style={{ backgroundImage: `url(${PreverFoto})` }}
-          className={foto ? "remove-elemet" : ""}
-        >
-          <Input
-            type="file"
-            name="foto_autor"
-            value=""
-            onchange={(event) => setFoto(event.target.files[0])}
-          />
-          <FaIcons.FaCamera className="icon" size={25} color="#555" />
-        </label>
+       
         <Input
           type="text"
           name="nome"
@@ -480,8 +562,18 @@ export const RegistroAutor = () => {
   );
 };
 
-export const RegestroCategoria = () => {
+export const RegestroCategoria = (id) => {
   const [form, setForm] = useState({});
+  useEffect(()=>{
+    const getCategor= async(id)=>{
+      console.log(id)
+      const result = await  getOnlyCagory(id)
+      setForm(result);
+    }
+  if(id){
+    getCategor(id);
+  }
+  },[])
   const onSubmit = async (e) => {
     e.preventDefault();
     if (form.categoria === "") {
@@ -515,7 +607,7 @@ export const RegestroCategoria = () => {
         />
 
         <div className="btn-up">
-          <Button value="Adicionar" onSubmit={() => onSubmit} />
+          <Button value="Editar Categoria" onSubmit={() => onSubmit} />
         </div>
       </form>
     </div>

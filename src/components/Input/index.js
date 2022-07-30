@@ -39,11 +39,11 @@ export const InputFilder = styled.div`
 `
 
 
-export default function Input({ type, name, value, placeholder,disabled, onchange}) {
+export default function Input({ type, name, accept, value, placeholder,disabled, onchange}) {
     return (
         <div>
             <InputFilder>
-               <input type={type} name={name} placeholder={placeholder} value={value} onChange={onchange} disabled={disabled}  />
+               <input type={type} accept={accept} name={name} placeholder={placeholder} value={value} onChange={onchange} disabled={disabled}  />
             </InputFilder>
         </div>
     )

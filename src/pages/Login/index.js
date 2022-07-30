@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as FaIcons from "react-icons/fa";
 import * as BIIcons from "react-icons/bi";
 import bainner from "../../assets/bainner.webp";
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Containner, CardLogin, Form, FormLogin } from "./styles";
 import { SignInUser } from "../../services/ApiUsers";
 import { login } from "../../store/action/auth";
@@ -25,7 +25,7 @@ export default function Login() {
         }}
       >
         <div className="eslog">
-          <h1>Desfruto dos melhores livros!</h1>
+          <h1>Desfrute dos melhores livros!</h1>
           <span>
             A sua conta e desfrute dos melhres livros, angolanos, brasileiros,
             grandes univerdades, escritórios nacionais, e muito mais.
@@ -63,13 +63,13 @@ export default function Login() {
   );
 }
 export const LoginForm = () => {
-  const [form, setForm] = useState({ email:'', senha:''});
+  const [form, setForm] = useState({});
   const dispatch = useDispatch();
   let history = useHistory();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (form.email === '') {
+    if (form.email === "") {
       sweetalert({
         title: "Erro de inserção",
         text: "Entroduza o seu email",
@@ -78,7 +78,7 @@ export const LoginForm = () => {
       });
       return false;
     }
-    if (form.senha === '') {
+    if (form.senha === "") {
       sweetalert({
         title: "Erro de inserção",
         text: "Introduza uma palavra-passe",
@@ -123,7 +123,7 @@ export const LoginForm = () => {
   return (
     <FormLogin style={{ textAlign: "center" }}>
       <div className="text-registro">
-        <h2>Cria uma conta e adiciona os seus melhores livros</h2>
+        <h2>Identifique-se para prosseguir!</h2>
       </div>
       <form onSubmit={onSubmit}>
         <Input

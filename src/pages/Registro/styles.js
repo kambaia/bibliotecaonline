@@ -25,7 +25,6 @@ export const Form = styled.div`
     .btn-registro{
         margin-right:5%;
         width:20%;
-       cursor:pointer;
     }
     
   }

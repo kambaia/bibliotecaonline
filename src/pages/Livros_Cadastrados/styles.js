@@ -25,23 +25,17 @@ export const Content = styled.div`
   justify-content: space-between;
 `;
 export const CardForm = styled.div`
-  width: 70%;
+ flex:3;
   box-shadow: 0px 0px 4px #555;
   display: flex;
   flex-direction: column;
   text-align: center;
   padding: 10px;
-  flex:3;
   .reader-top {
     border-bottom: 1px solid #ddd;
     display: flex;
-    width: 100%;
-    a{
-      background-color: #f00;
-      width: 100%;
-    }
     button {
-      width: 100%;
+      width: 24%;
       padding: 8px;
       background: #fff;
       border-style: none;
@@ -51,7 +45,9 @@ export const CardForm = styled.div`
   }
   .info {
     h3 {
-      padding: 20px;
+      padding: 20px 20px;
+      text-align: left;
+      color: #333;
     }
     input[type="checkbox"] {
       /* Double-sized Checkboxes */
@@ -132,11 +128,10 @@ export const CardForm = styled.div`
   }
 `;
 export const CardMenu = styled.div`
-  width: 20%;
+  flex:1;
   height: 500px;
   overflow-y: auto;
   border-right: 1px solid #ddd;
-  flex:1;
 `;
 export const Messagem = styled.div`
   background-color: rgba(0, 0, 0, 0.8);
@@ -166,5 +161,36 @@ export const Messagem = styled.div`
     text-align: center;
     width: 100%;
     height: 60%;
+  }
+`;
+
+
+export const ContentTable = styled.section`
+  #customers {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #customers td,
+  #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  #customers tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #customers tr:hover {
+    background-color: #ddd;
+  }
+
+  #customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04aa6d;
+    color: white;
   }
 `;

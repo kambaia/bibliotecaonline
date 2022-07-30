@@ -48,6 +48,7 @@ export const Form = styled.div`
       padding:8px;
       background-color:#0c854e;
       border: 1px solid #fff;
+      cursor: pointer;
     }
   }
 
@@ -78,6 +79,7 @@ background-color:#fff;
    .btn-login{
        margin-right:5%;
        width:20%;
+       cursor: pointer;
    }
    
  }

@@ -32,6 +32,7 @@ export default function Perfil() {
                            <CardMenu className="menu">
                                <SideBar/>
                            </CardMenu>
+                           
                             <CardForm>
                                <div className="reader-top">
                                    <h2>Perfil público</h2>

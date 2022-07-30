@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 export const ContentSession = styled.section`
+${props => console.log(props.publidade)};
    width:100%;
    display:flex;
-   height:100%;
    box-shadow: 2px 1px 10px #d0d9d5;
-   padding:40px;
-   margin-bottom:40px;
+   padding-bottom:100px;
+   align-items: center;
    .bainner-titulo{
      width:100%;
      h1{
@@ -16,10 +16,16 @@ export const ContentSession = styled.section`
   }
   .publicidades{
     text-align:center;
-    width:40%;
     box-shadow: 1px 0px 5px #0c854e;
-    margin-left:2.5%;
-    margin-top:-40px;
+    flex: 2;
+    height:500px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    color: #ddd;
+    margin-left: 2em;
+    margin-right: 2em;
+ 
+    
    
     h2{
       border-bottom:1px solid #d0d9d5;
@@ -29,10 +35,11 @@ export const ContentSession = styled.section`
  `
 export const CardBooks = styled.div`
    box-shadow: 1px 1px 5px #0c854e;
-    width:55%;
-    margin-left:30px;
     position: relative;
-    bottom:40px;
+    flex: 2.5;
+    height:auto;
+    margin-left: 2em;
+    margin-right: 2em;
    a{
      text-decoration:none;
      color:#555;
@@ -48,16 +55,17 @@ export const CardBooks = styled.div`
    .disc{
      display:flex;
      padding:10px;
-     padding:10px 20px 100px 10px;
+     padding:10px 10px 100px 10px;
      
    }
    .card-capa{
     width:100%;
     text-align:center;
     img{
+      max-width: 100%;
         width:100%;
-        width:250px;
-        height:250px;
+        width:300px;
+        height:300px;
     }
     
    }
@@ -67,9 +75,11 @@ export const CardBooks = styled.div`
          flex-direction:column;
          margin-top:-20px;
          height:100px;
+       
         span{
             font-size:1.2em;
-            padding:5px
+            padding:5px;
+           
         }
     }
     .rodape {
@@ -78,6 +88,7 @@ export const CardBooks = styled.div`
       align-items:center;
       justify-content:space-between;
       padding:10px 10px 20px 10px;
+      
      
       ul{
         display:flex;
